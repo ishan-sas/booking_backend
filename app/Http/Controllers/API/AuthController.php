@@ -12,6 +12,15 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    public function getCustomers() {
+        $getData = Users::all();
+        return response()->json([
+            'status'=>200,
+            'get_data'=>$getData
+        ]);
+    }
+    
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -33,13 +42,19 @@ class AuthController extends Controller
             ]);
         }
         else {
+            if(json_encode($request->is_subscribe['isSubscribe']) == true) {
+               $isSubscribe = 1; 
+            }
+            else {
+                $isSubscribe = 0; 
+            }
             $user = Users::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'contact_no' => $request->contact_no,
                 'user_role' => $request->user_role,
-                'is_subscribe' => $request->is_subscribe,
+                'is_subscribe' => $isSubscribe,
             ]);
         }
         

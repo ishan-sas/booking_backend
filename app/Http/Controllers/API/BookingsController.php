@@ -25,10 +25,10 @@ class BookingsController extends Controller
     }
 
     public function appointmentsByStore($slug) {
-        $storeId = Stores::select('id')->where('slug', $slug)->first();
+        //$storeId = Stores::select('id')->where('slug', $slug)->first();
         $bookingList = DB::table('bookings')
             ->select('*')
-            ->where('stores_id', $storeId['id'])
+            ->where('stores_id', $slug)
             ->get();
 
         return response()->json([
@@ -55,27 +55,33 @@ class BookingsController extends Controller
      */
     public function regWithBooking(Request $request)
     {
+        $isSubscribe = 0;
+        if(json_encode($request->is_subscribe['isSubscribe']) == true) {
+            $isSubscribe = 1; 
+         }
         $user = Users::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'contact_no' => $request->contact_no,
             'user_role' => $request->user_role,
-            'is_subscribe' => $request->is_subscribe,
+            'is_subscribe' => $isSubscribe,
         ]);
 
         // foreach($request->time_slots_id as $timeSlot) {
         //     return $timeSlot;
         //     die();
-            $booking = Bookings::create([
-                'user_id' => $user['id'],
-                'stores_id' => 1,
-                'time_slots_id' => json_encode($request->time_slots_id),
-                'no_of_kids' => $request->no_of_kids,
-                'booking_date' => $request->booking_date,
-                'ftroom' => $request->ftroom,
-                'extra_note' => $request->extra_note,
-            ]);
+        
+        $storeId = Stores::select('id')->where('slug', $request->stores_id)->first();
+        $booking = Bookings::create([
+            'user_id' => $user['id'],
+            'stores_id' => $storeId->id,
+            'time_slots_id' => json_encode($request->time_slots_id),
+            'no_of_kids' => $request->no_of_kids,
+            'booking_date' => $request->booking_date,
+            'ftroom' => $request->ftroom,
+            'extra_note' => $request->extra_note,
+        ]);
         //}
 
         return response()->json([
@@ -133,15 +139,16 @@ class BookingsController extends Controller
 
         
         //foreach($request->time_slots_id as $timeSlot) {
-            $booking = Bookings::create([
-                'user_id' => $user->id,
-                'stores_id' => 1,
-                'time_slots_id' => json_encode($request->time_slots_id),
-                'no_of_kids' => $request->no_of_kids,
-                'booking_date' => $request->booking_date,
-                'ftroom' => $request->ftroom,
-                'extra_note' => $request->extra_note,
-            ]);
+        $storeId = Stores::select('id')->where('slug', $request->stores_id)->first();
+        $booking = Bookings::create([
+            'user_id' => $user->id,
+            'stores_id' =>  $storeId->id,
+            'time_slots_id' => json_encode($request->time_slots_id),
+            'no_of_kids' => $request->no_of_kids,
+            'booking_date' => $request->booking_date,
+            'ftroom' => $request->ftroom,
+            'extra_note' => $request->extra_note,
+        ]);
         //}
      
 

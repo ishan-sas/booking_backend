@@ -27,6 +27,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
         ], 200);
     });
 
+    Route::get('get-time-label', [TimeslotsController::class, 'getTimeLabel']);    
+    Route::get('get-customers', [AuthController::class, 'getCustomers']);
     Route::post('store-timeslots/{id}', [TimeslotsController::class, 'store']);
     Route::get('edit-timeslots/{id}', [TimeslotsController::class, 'edit']);
 

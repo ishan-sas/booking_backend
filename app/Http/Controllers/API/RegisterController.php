@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Organizations;
+use App\Models\Users;
 use Illuminate\Http\Request;
+use App\Models\Organizations;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,7 +32,7 @@ class RegisterController extends Controller
                 'password' => Hash::make($request->password),
                 'contact_no' => $request->contact_no,
                 'user_role' => $request->user_role, // 1: store user, 2: customers
-                'is_subscribe' => $request->is_subscribe,
+                'is_subscribe' => json_encode($request->is_subscribe),
             ]);
 
             // if($request->user_role == 1) {

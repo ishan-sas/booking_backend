@@ -49,25 +49,23 @@ class TimeslotsController extends Controller
                 }
                 $timeSlotes[$key]['kids_count'] = $kids;
             }
-        // $bookedSlots = DB::table('bookings')
-        //     ->select('no_of_kids', 'time_slots_id')
-        //     ->where('booking_date', $requestDate)
-        //     ->get();  
-
-        // $timeSlotes = DB::table('time_slots')
-        //     ->join('bookings', function ($join) {
-        //     //$join->on('time_slots.id', '=', 'bookings.time_slots_id');
-        // })
-        // ->get();
-
         return response()->json([
             'status' => 200,
-            // 'bookedslots' => $bookedSlots,
             'timeslots' => $timeSlotes,
         ]);      
     }
 
-        /**
+
+    public function getTimeLabel() {
+        $getData = TimeSlots::all();
+        return response()->json([
+            'status'=>200,
+            'get_data'=>$getData
+        ]);
+    }
+
+    
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
