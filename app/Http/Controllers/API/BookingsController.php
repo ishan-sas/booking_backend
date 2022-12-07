@@ -56,9 +56,9 @@ class BookingsController extends Controller
     public function regWithBooking(Request $request)
     {
         $isSubscribe = 0;
-        if(json_encode($request->is_subscribe['isSubscribe']) == true) {
+        if(json_encode($request->is_subscribe) == true) {
             $isSubscribe = 1; 
-         }
+        }
         $user = Users::create([
             'name' => $request->name,
             'email' => $request->email,

@@ -26,13 +26,17 @@ class RegisterController extends Controller
             ]);
         }
         else {
+            $isSubscribe = 0;
+            if(json_encode($request->is_subscribe) == true) {
+                $isSubscribe = 1; 
+            }
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'contact_no' => $request->contact_no,
                 'user_role' => $request->user_role, // 1: store user, 2: customers
-                'is_subscribe' => json_encode($request->is_subscribe),
+                'is_subscribe' => $isSubscribe,
             ]);
 
             // if($request->user_role == 1) {

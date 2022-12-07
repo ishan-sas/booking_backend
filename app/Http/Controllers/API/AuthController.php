@@ -42,11 +42,9 @@ class AuthController extends Controller
             ]);
         }
         else {
-            if(json_encode($request->is_subscribe['isSubscribe']) == true) {
-               $isSubscribe = 1; 
-            }
-            else {
-                $isSubscribe = 0; 
+            $isSubscribe = 0;
+            if(json_encode($request->is_subscribe) == true) {
+                $isSubscribe = 1; 
             }
             $user = Users::create([
                 'name' => $request->name,
