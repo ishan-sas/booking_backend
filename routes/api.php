@@ -31,6 +31,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('get-customers', [AuthController::class, 'getCustomers']);
     Route::post('store-timeslots/{id}', [TimeslotsController::class, 'store']);
     Route::get('edit-timeslots/{id}', [TimeslotsController::class, 'edit']);
+    Route::get('edit-account/{id}', [StoresController::class, 'edit']);
+    Route::put('update-account/{id}', [StoresController::class, 'update']);
 
     Route::post('store-register', [AuthController::class, 'storeRegister']);
     Route::get('get-storeid/{id}', [StoreUsersController::class, 'getStoreIdByUser']);

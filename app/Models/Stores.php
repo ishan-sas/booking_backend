@@ -14,6 +14,8 @@ class Stores extends Model
         'store_name',
         'slug',
         'no_of_ftrooms',
+        'contact_no',
+        'address',
         'status',
     ];
 }

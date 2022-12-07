@@ -100,6 +100,8 @@ class AuthController extends Controller
                 'store_name' => $request->name,
                 'slug' =>  strtolower(str_replace(' ', '-', $request->name)),
                 'no_of_ftrooms' => $request->no_of_ftrooms,
+                'contact_no' => $request->contact_no,
+                'address' => $request->address,
             ]);
 
             $store = StoreUsers::create([

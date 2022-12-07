@@ -6,6 +6,7 @@ use App\Models\Stores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class StoresController extends Controller
 {
@@ -77,7 +78,19 @@ class StoresController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Stores::where('id', '=', $id)->firstOrFail();
+        if($data) {
+            return response()->json([
+                'status' => 200,
+                'get_data' => $data
+            ]);
+        }
+        else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No ID found.!',
+            ]);
+        }
     }
 
     /**
@@ -89,7 +102,37 @@ class StoresController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'store_name' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->messages(),
+            ]);
+        }
+        else {
+            $stores = Stores::find($id);
+            if($stores) {
+                $stores->store_name = $request->input('store_name');
+                $stores->no_of_ftrooms = $request->input('no_of_ftrooms');
+                $stores->address = $request->input('address');
+                $stores->contact_no = $request->input('contact_no');
+
+                $stores->save();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Successfully updated.',
+                ]);
+            }
+            else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No ID found.',
+                ]);
+            } 
+        }
     }
 
     /**

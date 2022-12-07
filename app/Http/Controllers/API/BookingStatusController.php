@@ -59,7 +59,7 @@ class BookingStatusController extends Controller
 
             $bookings = Bookings::find($request->booking_id);
             if($bookings) {
-                $bookings->status = $request->input('status');
+                $bookings->status = $request->status;
 
                 $bookings->save();
             }

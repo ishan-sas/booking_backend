@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Query\Expression;
 
 return new class extends Migration
 {
@@ -14,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('store_schools', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('store_name', 128);
-            $table->string('slug', 128);
-            $table->integer('no_of_ftrooms')->nullable();
-            $table->string('contact_no', 128);
-            $table->text('address');
-            $table->integer('status')->default(1);
+            $table->foreignId('stores_id')->constrained();
+            $table->string('school_name');
             $table->timestamps();
         });
     }
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stores');
+        Schema::dropIfExists('store_schools');
     }
 };
