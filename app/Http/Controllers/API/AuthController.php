@@ -82,13 +82,17 @@ class AuthController extends Controller
             ]);
         }
         else {
+            $isSubscribe = 0;
+            if(json_encode($request->is_subscribe) == true) {
+                $isSubscribe = 1; 
+            }
             $user = Users::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'contact_no' => $request->contact_no,
                 'user_role' => $request->user_role,
-                'is_subscribe' => $request->is_subscribe,
+                'is_subscribe' => $isSubscribe,
             ]);
             
             $store = Stores::create([
