@@ -7,6 +7,7 @@ use App\Http\Controllers\API\StoresController;
 use App\Http\Controllers\API\BookingsController;
 use App\Http\Controllers\API\TimeslotsController;
 use App\Http\Controllers\api\StoreUsersController;
+use App\Http\Controllers\api\StoreSchoolsController;
 use App\Http\Controllers\api\BookingStatusController;
 
 Route::post('register', [AuthController::class, 'store']);
@@ -33,6 +34,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('edit-timeslots/{id}', [TimeslotsController::class, 'edit']);
     Route::get('edit-account/{id}', [StoresController::class, 'edit']);
     Route::put('update-account/{id}', [StoresController::class, 'update']);
+    Route::post('store-schools/{id}', [StoreSchoolsController::class, 'store']); 
+    Route::get('edit-storeschools/{id}', [StoreSchoolsController::class, 'edit']);
 
     Route::post('store-register', [AuthController::class, 'storeRegister']);
     Route::get('get-storeid/{id}', [StoreUsersController::class, 'getStoreIdByUser']);
