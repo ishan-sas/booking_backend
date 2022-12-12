@@ -148,14 +148,14 @@ class AuthController extends Controller
             }
             else {
                 // if($user->user_role === 0) {
-                //     $token = $user->createToken($user->email.'_SuperUsertoken', ['server:superUser'])->plainTextToken;
+                //     $token = $user->createToken($user->email.'_SuperUserToken', ['server:superUser'])->plainTextToken;
                 // }
                 // if($user->user_role === 1) {
-                //     $token = $user->createToken($user->email.'_AdminUsertoken', ['server:adminUser'])->plainTextToken;
+                //     $token = $user->createToken($user->email.'_AdminUserToken', ['server:adminUser'])->plainTextToken;
                 // }
                 // else {
                     $token = $user->createToken($user->email.'_Token')->plainTextToken;
-                //}
+                // }
 
                 $storeProfile = StoreUsers::where('user_id', $user->id)->first();
                 if(isset($storeProfile)) {

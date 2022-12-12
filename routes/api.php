@@ -16,6 +16,7 @@ Route::post('login', [AuthController::class, 'authenticate']);
 Route::get('get-stores', [StoresController::class, 'index']);
 Route::get('stores/{slug}', [StoresController::class, 'show']);
 Route::get('get-slots/{slug}/{day}/{noofchild}', [TimeslotsController::class, 'index']);
+Route::get('get-schools/{slug}', [StoreSchoolsController::class, 'index']);
 
 Route::post('register-with-booking', [BookingsController::class, 'regWithBooking']);
 Route::post('login-with-booking', [BookingsController::class, 'loginWithBooking']);

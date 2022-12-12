@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\Stores;
 use App\Models\StoreSchools;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -15,9 +17,19 @@ class StoreSchoolsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $storeName = Stores::select('store_name')->where('id', $id)->first();
+        $schoolList = DB::table('store_schools')
+        ->select('school_name')
+        ->where('stores_id', $id)
+        ->get();
+
+        return response()->json([
+            'status' => 200,
+            'store_name' => $storeName,
+            'get_data' => $schoolList
+        ]);
     }
 
     /**
