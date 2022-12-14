@@ -63,7 +63,7 @@ class StoreSchoolsController extends Controller
         else {
             $user_id = Auth::user()->id;
             foreach($request->schoolTimeSlots as $row) {
-                if($row['id'] == NULL) {
+                if(empty( $row['id'] )) {
                     $storeSchool = StoreSchools::create([
                         'user_id' => $user_id,
                         'stores_id' => $row['stores_id'],
