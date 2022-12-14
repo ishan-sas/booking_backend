@@ -48,8 +48,9 @@ class StoreSchoolsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Stores $stores, Request $request)
     {
+        dd($stores);
         // $validator = Validator::make($request->all(),
         //     [
         //         'school_name' => '',
