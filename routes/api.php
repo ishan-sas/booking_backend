@@ -6,9 +6,9 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\StoresController;
 use App\Http\Controllers\API\BookingsController;
 use App\Http\Controllers\API\TimeslotsController;
-use App\Http\Controllers\api\StoreUsersController;
-use App\Http\Controllers\api\StoreSchoolsController;
-use App\Http\Controllers\api\BookingStatusController;
+use App\Http\Controllers\API\StoreUsersController;
+use App\Http\Controllers\API\StoreSchoolsController;
+use App\Http\Controllers\API\BookingStatusController;
 
 Route::post('register', [AuthController::class, 'store']);
 Route::post('login', [AuthController::class, 'authenticate']);
