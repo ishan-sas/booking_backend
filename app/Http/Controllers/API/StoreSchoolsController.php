@@ -61,6 +61,7 @@ class StoreSchoolsController extends Controller
         //     ]);
         // }
         //else {
+            dd($request);
             $user_id = Auth::user()->id;
             foreach($request->schoolTimeSlots as $row) {
                 if(empty( $row['id'] )) {
