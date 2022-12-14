@@ -48,21 +48,19 @@ class StoreSchoolsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Stores $stores, Request $request)
+    public function store(Request $request)
     {
-        dd($stores);
-        // $validator = Validator::make($request->all(),
-        //     [
-        //         'school_name' => '',
-        //     ]
-        // );
-        // if($validator->fails()){
-        //     return response()->json([
-        //         'validation_errors' => $validator->messages(),
-        //     ]);
-        // }
-        //else {
-            dd($request);
+        $validator = Validator::make($request->all(),
+            [
+                'school_name' => '',
+            ]
+        );
+        if($validator->fails()){
+            return response()->json([
+                'validation_errors' => $validator->messages(),
+            ]);
+        }
+        else {
             $user_id = Auth::user()->id;
             foreach($request->schoolTimeSlots as $row) {
                 if(empty( $row['id'] )) {
@@ -71,7 +69,6 @@ class StoreSchoolsController extends Controller
                         'stores_id' => $row['stores_id'],
                         'school_name' => $row['school_name'],
                     ]);
-                    dd($storeSchool);
                 }
                 else {
                     $storeSchool = StoreSchools::find($row['id']);
@@ -90,7 +87,7 @@ class StoreSchoolsController extends Controller
             ]);
 
 
-        //}
+        }
     }
 
     /**
