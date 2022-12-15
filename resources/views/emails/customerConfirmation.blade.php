@@ -15,8 +15,8 @@
 		<div style="display: block;width: calc(80% - 32px);max-width: 700px;padding: 32px;margin: 0 auto;background-color: #ffffff;border-radius: 0 0 8px 8px;">
 			<div style="width: 100%; display: inline-block;">
 				<div style="width: 100%; display: block; margin-bottom: 30px;">
-          <p>Hello,</p>
-					<p>You’ve received the new booking.</p>
+          <p>Dear valued customer,</p>
+					<p>Thank you for using our online booking system. Your booking has been received.</p>
 				</div>
 				<div style="width: 100%; display: block; margin-bottom: 10px;">
 					<div style="width: 30%; display: inline-block;"><label style="font-weight:500;display: block;">Booking Date:</label></div>
@@ -33,10 +33,6 @@
         <div style="width: 100%; display: block; margin-bottom: 10px;">
 					<div style="width: 30%; display: inline-block;"><label style="font-weight:500;display: block;">Store Name:</label></div>
           <div style="width: 65%; display: inline-block;">{{ $booking['store_name'] }}</div>
-				</div>
-				<div style="width: 100%; display: block; margin-bottom: 10px;">
-					<div style="width: 30%; display: inline-block;"><label style="font-weight:500;display: block;">Customer Email:</label></div>
-          <div style="width: 65%; display: inline-block;">{{ $booking['customer_email'] }}</div>
 				</div>
 
 				<div style="width: 100%; display: inline-block; margin-top: 15px;">
