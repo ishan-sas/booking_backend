@@ -150,7 +150,7 @@ class BookingsController extends Controller
         $booking['time_slots'] = json_encode($timeSlotData);
         $booking['store_name'] = $storeData->store_name; 
 
-        //Mail::to($storeData->email)->send(new NewBooking($booking));
+        Mail::to($storeData->email)->send(new NewBooking($booking));
         Mail::to($request->email)->send(new ClientConfirmation($booking));
 
         return response()->json([
