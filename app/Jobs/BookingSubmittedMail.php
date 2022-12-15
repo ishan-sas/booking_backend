@@ -7,13 +7,13 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Mail\BookingSubmittedEmail as BookingSubmittedMail;
+use App\Mail\BookingSubmittedMail as BookingSubmittedEmail;
 
 use Illuminate\Support\Facades\DB;
 use Mail;
 use App\Event;
 
-class BookingSubmittedEmail implements ShouldQueue
+class BookingSubmittedMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

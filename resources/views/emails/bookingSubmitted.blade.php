@@ -4,8 +4,8 @@
     <title>ItsolutionStuff.com</title>
 </head>
 <body>
-    <h1>{{ $details['booking_date'] }}</h1>
-    <p>{{ $details['time_slots'] }}</p>
+    <h1>xgxgxfx</h1>
+    <p>vjvj</p>
    
     <p>Thank you</p>
 </body>

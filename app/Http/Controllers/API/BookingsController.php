@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\API;
 
 use App\Models\Users;
 use App\Models\Stores;
+use App\Mail\NewBooking;
 use App\Models\Bookings;
 use App\Models\TimeSlots;
 use App\Models\StoreUsers;
@@ -12,6 +13,7 @@ use App\Jobs\BookingSubmittedMail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class BookingsController extends Controller
@@ -148,7 +150,7 @@ class BookingsController extends Controller
         $booking['time_slots'] = json_encode($timeSlotData);
         $booking['store_name'] = $storeData->store_name; 
 
-        dispatch(new BookingSubmittedMail($bookingData));
+        Mail::to('aishan.info@gmail.com')->send(new NewBooking());
 
         return response()->json([
             'status' => 200,
