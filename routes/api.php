@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('get-customers', [AuthController::class, 'getCustomers']);
     Route::post('store-timeslots/{id}', [TimeslotsController::class, 'store']);
     Route::get('edit-timeslots/{id}', [TimeslotsController::class, 'edit']);
+    Route::delete('remove-timeslot/{id}', [TimeslotsController::class, 'destroy']);
     Route::get('edit-account/{id}', [StoresController::class, 'edit']);
     Route::put('update-account/{id}', [StoresController::class, 'update']);
     Route::post('store-schools/{id}', [StoreSchoolsController::class, 'store']); 

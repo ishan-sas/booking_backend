@@ -344,6 +344,10 @@ class TimeslotsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleted = DB::table('time_slots')->where('id', $id)->delete();
+        return response()->json([
+            'status' => 200,
+            'messagen' => 'Record deleted successfully.',
+        ]);
     }
 }
