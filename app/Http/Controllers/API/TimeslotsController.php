@@ -255,6 +255,40 @@ class TimeslotsController extends Controller
                     }
                 }
             }
+
+            foreach($request->saturdayTimeSlots as $row) {
+                $slot = explode("-", $row['time_slot']);
+                $startTime = (float)$slot[0];
+                if($startTime < 8 ) { 
+                    $session = 'PM'; 
+                }
+                else { 
+                    $session = 'AM'; 
+                }
+                if($row['id'] == NULL) {
+                    $timeSlots = TimeSlots::create([
+                        'user_id' => $user_id,
+                        'stores_id' => $row['stores_id'],
+                        'day' => $row['day'],
+                        'time_slot' => $row['time_slot'],
+                        'session' => $session
+                    ]);
+                }
+                else {
+                    $timeSlotData = TimeSlots::find($row['id']);
+                    if($timeSlotData) {
+                        $timeSlotData->user_id = $user_id;
+                        $timeSlotData->stores_id = $row['stores_id'];
+                        $timeSlotData->day = $row['day'];
+                        $timeSlotData->time_slot = $row['time_slot'];
+                        $timeSlotData->session = $session;
+
+                        $timeSlotData->save();
+                    }
+                }
+            }
+
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Time sheet successfully added.',

@@ -119,6 +119,7 @@ class StoresController extends Controller
                 $stores->no_of_ftrooms = $request->input('no_of_ftrooms');
                 $stores->address = $request->input('address');
                 $stores->contact_no = $request->input('contact_no');
+                $stores->email = $request->input('email');
 
                 $stores->save();
                 return response()->json([
