@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::put('update-account/{id}', [StoresController::class, 'update']);
     Route::post('store-schools/{id}', [StoreSchoolsController::class, 'store']); 
     Route::get('edit-storeschools/{id}', [StoreSchoolsController::class, 'edit']);
+    Route::delete('remove-schools/{id}', [StoreSchoolsController::class, 'destroy']);
 
     Route::post('store-register', [AuthController::class, 'storeRegister']);
     Route::get('get-storeid/{id}', [StoreUsersController::class, 'getStoreIdByUser']);

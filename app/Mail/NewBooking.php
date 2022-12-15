@@ -21,7 +21,7 @@ class NewBooking extends Mailable
      *
      * @return void
      */
-    public function __construct(Booking $booking)
+    public function __construct(Array $booking)
     {
         $this->booking = $booking;
     }

@@ -19,9 +19,9 @@ class ClientConfirmation extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Array $booking)
     {
-        //
+        $this->booking = $booking;
     }
 
     /**

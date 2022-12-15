@@ -136,6 +136,10 @@ class StoreSchoolsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleted = DB::table('store_schools')->where('id', $id)->delete();
+        return response()->json([
+            'status' => 200,
+            'messagen' => 'Record deleted successfully.',
+        ]);
     }
 }

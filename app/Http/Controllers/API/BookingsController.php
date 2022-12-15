@@ -91,13 +91,13 @@ class BookingsController extends Controller
 
         $booking = Bookings::create($bookingData);
 
-        $booking['customer_email'] = $request->email;
-        $booking['store_email'] = $storeData->email;
-        $booking['time_slots'] = json_encode($timeSlotData);
-        $booking['store_name'] = $storeData->store_name; 
+        $bookingData['customer_email'] = $request->email;
+        $bookingData['store_email'] = $storeData->email;
+        $bookingData['time_slots'] = json_encode($timeSlotData);
+        $bookingData['store_name'] = $storeData->store_name; 
 
-        Mail::to($storeData->email)->send(new NewBooking($booking));
-        Mail::to($request->email)->send(new ClientConfirmation($booking));
+        Mail::to($storeData->email)->send(new NewBooking($bookingData));
+        Mail::to($request->email)->send(new ClientConfirmation($bookingData));
 
         return response()->json([
             'status' => 200,
@@ -105,7 +105,7 @@ class BookingsController extends Controller
             'message' => 'Registered successfully.',
         ]);
     }
-    
+
 
     public function loginWithBooking(Request $request) {
 
@@ -162,13 +162,13 @@ class BookingsController extends Controller
 
         $booking = Bookings::create($bookingData);
 
-        $booking['customer_email'] = $request->email;
-        $booking['store_email'] = $storeData->email;
-        $booking['time_slots'] = json_encode($timeSlotData);
-        $booking['store_name'] = $storeData->store_name; 
+        $bookingData['customer_email'] = $request->email;
+        $bookingData['store_email'] = $storeData->email;
+        $bookingData['time_slots'] = json_encode($timeSlotData);
+        $bookingData['store_name'] = $storeData->store_name; 
 
-        Mail::to($storeData->email)->send(new NewBooking($booking));
-        Mail::to($request->email)->send(new ClientConfirmation($booking));
+        Mail::to($storeData->email)->send(new NewBooking($bookingData));
+        Mail::to($request->email)->send(new ClientConfirmation($bookingData));
 
         return response()->json([
             'status' => 200,
