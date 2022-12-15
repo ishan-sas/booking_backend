@@ -10,20 +10,18 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NewBooking extends Mailable
+class ClientConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $booking;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Booking $booking)
+    public function __construct()
     {
-        $this->booking = $booking;
+        //
     }
 
     /**
@@ -35,7 +33,7 @@ class NewBooking extends Mailable
     {
         return new Envelope(
             from: new Address('info@sas.co.nz', 'TUS Booking'),
-            subject: 'New Booking',
+            subject: 'Booking confirmation',
         );
     }
 
@@ -47,7 +45,7 @@ class NewBooking extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.newBooking',
+            view: 'emails.customerConfirmation',
         );
     }
 

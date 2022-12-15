@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ItsolutionStuff.com</title>
+    <title>Customer Confirmation</title>
 </head>
 <body>
     <h1>xgxgxfx</h1>

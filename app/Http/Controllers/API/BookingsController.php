@@ -5,11 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Models\Users;
 use App\Models\Stores;
 use App\Mail\NewBooking;
+use App\Mail\ClientConfirmation;
 use App\Models\Bookings;
 use App\Models\TimeSlots;
 use App\Models\StoreUsers;
 use Illuminate\Http\Request;
-use App\Jobs\BookingSubmittedMail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -150,7 +150,8 @@ class BookingsController extends Controller
         $booking['time_slots'] = json_encode($timeSlotData);
         $booking['store_name'] = $storeData->store_name; 
 
-        Mail::to('aishan.info@gmail.com')->send(new NewBooking());
+        //Mail::to($storeData->email)->send(new NewBooking($booking));
+        Mail::to($request->email)->send(new ClientConfirmation($booking));
 
         return response()->json([
             'status' => 200,
