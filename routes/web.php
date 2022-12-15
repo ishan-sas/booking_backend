@@ -20,3 +20,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+// Route::get('send-mail', function () {
+   
+//     $details = [
+//         'title' => 'Mail from ItSolutionStuff.com',
+//         'body' => 'This is for testing email using smtp'
+//     ];
+   
+//     \Mail::to('ishan@sascreative.co.nz')->send(new \App\Mail\BookingSubmittedMail($details));
+   
+//     dd("Email is Sent.");
+// });

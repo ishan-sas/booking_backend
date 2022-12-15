@@ -102,6 +102,7 @@ class AuthController extends Controller
                 'no_of_ftrooms' => $request->no_of_ftrooms,
                 'contact_no' => $request->contact_no,
                 'address' => $request->address,
+                'email' => $request->email,
             ]);
 
             $store = StoreUsers::create([

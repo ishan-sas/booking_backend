@@ -16,6 +16,7 @@ class Stores extends Model
         'no_of_ftrooms',
         'contact_no',
         'address',
+        'email',
         'status',
     ];
 }

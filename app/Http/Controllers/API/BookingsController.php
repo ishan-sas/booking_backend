@@ -5,8 +5,10 @@ namespace App\Http\Controllers\api;
 use App\Models\Users;
 use App\Models\Stores;
 use App\Models\Bookings;
+use App\Models\TimeSlots;
 use App\Models\StoreUsers;
 use Illuminate\Http\Request;
+use App\Jobs\BookingSubmittedMail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -68,10 +70,6 @@ class BookingsController extends Controller
             'is_subscribe' => $isSubscribe,
         ]);
 
-        // foreach($request->time_slots_id as $timeSlot) {
-        //     return $timeSlot;
-        //     die();
-        
         $storeId = Stores::select('id')->where('slug', $request->stores_id)->first();
         $booking = Bookings::create([
             'user_id' => $user['id'],
@@ -82,7 +80,6 @@ class BookingsController extends Controller
             'ftroom' => $request->ftroom,
             'extra_note' => $request->extra_note,
         ]);
-        //}
 
         return response()->json([
             'status' => 200,
@@ -115,17 +112,7 @@ class BookingsController extends Controller
                 ]);
             }
             else {
-                // if($user->user_role === 0) {
-                //     $token = $user->createToken($user->email.'_SuperUsertoken', ['server:superUser'])->plainTextToken;
-                // }
-                // if($user->user_role === 1) {
-                //     $token = $user->createToken($user->email.'_AdminUsertoken', ['server:adminUser'])->plainTextToken;
-                // }
-                // else {
-                    $token = $user->createToken($user->email.'_Token')->plainTextToken;
-                //}
-
-
+                $token = $user->createToken($user->email.'_Token')->plainTextToken;
 
                 $storeProfile = StoreUsers::where('user_id', $user->id)->first();
                 if(isset($storeProfile)) {
@@ -137,20 +124,31 @@ class BookingsController extends Controller
             }
         }
 
-        
-        //foreach($request->time_slots_id as $timeSlot) {
-        $storeId = Stores::select('id')->where('slug', $request->stores_id)->first();
-        $booking = Bookings::create([
+        $storeData = Stores::select('id', 'store_name', 'email')->where('slug', $request->stores_id)->first();
+        $timeSlotData = [];
+        foreach ($request->time_slots_id as $timeSlot) {
+            $timeLabel = TimeSlots::select('time_slot')->where('id', $timeSlot)->first();
+            array_push($timeSlotData, $timeLabel);
+        }
+
+        $bookingData = [
             'user_id' => $user->id,
-            'stores_id' =>  $storeId->id,
+            'stores_id' =>  $storeData->id,
             'time_slots_id' => json_encode($request->time_slots_id),
             'no_of_kids' => $request->no_of_kids,
             'booking_date' => $request->booking_date,
             'ftroom' => $request->ftroom,
             'extra_note' => $request->extra_note,
-        ]);
-        //}
-     
+        ];
+
+        $booking = Bookings::create($bookingData);
+
+        $booking['customer_email'] = $request->email;
+        $booking['store_email'] = $storeData->email;
+        $booking['time_slots'] = json_encode($timeSlotData);
+        $booking['store_name'] = $storeData->store_name; 
+
+        dispatch(new BookingSubmittedMail($bookingData));
 
         return response()->json([
             'status' => 200,
