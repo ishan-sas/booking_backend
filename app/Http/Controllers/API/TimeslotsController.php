@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Bookings;
+
 class TimeslotsController extends Controller
 {
     /**
@@ -54,7 +55,6 @@ class TimeslotsController extends Controller
             'timeslots' => $timeSlotes,
         ]);      
     }
-
 
     public function getTimeLabel() {
         $getData = TimeSlots::all();

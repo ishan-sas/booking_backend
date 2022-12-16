@@ -9,6 +9,7 @@ use App\Http\Controllers\API\TimeslotsController;
 use App\Http\Controllers\API\StoreUsersController;
 use App\Http\Controllers\API\StoreSchoolsController;
 use App\Http\Controllers\API\BookingStatusController;
+use App\Http\Controllers\api\StoreUnavailableDatesController;
 
 Route::post('register', [AuthController::class, 'store']);
 Route::post('login', [AuthController::class, 'authenticate']);
@@ -16,6 +17,7 @@ Route::post('login', [AuthController::class, 'authenticate']);
 Route::get('get-stores', [StoresController::class, 'index']);
 Route::get('stores/{slug}', [StoresController::class, 'show']);
 Route::get('get-slots/{slug}/{day}/{noofchild}', [TimeslotsController::class, 'index']);
+Route::get('get-unavailable-dates/{slug}/{day}', [StoreUnavailableDatesController::class, 'getUnavailableDates']);
 Route::get('get-schools/{slug}', [StoreSchoolsController::class, 'index']);
 
 Route::post('register-with-booking', [BookingsController::class, 'regWithBooking']);
@@ -39,6 +41,9 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('store-schools/{id}', [StoreSchoolsController::class, 'store']); 
     Route::get('edit-storeschools/{id}', [StoreSchoolsController::class, 'edit']);
     Route::delete('remove-schools/{id}', [StoreSchoolsController::class, 'destroy']);
+    Route::post('store-unavailable-dates/{store}', [StoreUnavailableDatesController::class, 'store']);
+    Route::get('edit-unavailable-dates/{id}', [StoreUnavailableDatesController::class, 'edit']);
+    Route::delete('remove-unavaidates/{id}', [StoreUnavailableDatesController::class, 'destroy']);
 
     Route::post('store-register', [AuthController::class, 'storeRegister']);
     Route::get('get-storeid/{id}', [StoreUsersController::class, 'getStoreIdByUser']);
