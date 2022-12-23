@@ -18,10 +18,12 @@ class StoreUnavailableDatesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getUnavailableDates($slug, $requestDate) {
+        $storeData = Stores::select('id')->where('slug', $slug)->first();
         $unaveDate = DB::table('store_unavailable_dates')
             ->select('unave_date')
             ->where('unave_date', $requestDate)
-            ->where('stores_id', 1)
+            ->where('unave_type', 1)
+            ->where('stores_id', $storeData->id)
             ->get();
         return response()->json([
             'status'=>200,
@@ -64,6 +66,7 @@ class StoreUnavailableDatesController extends Controller
                         'user_id' => $user_id,
                         'stores_id' => $row['stores_id'],
                         'unave_date' => $row['unave_date'],
+                        'unave_type' => $row['unave_type'],
                     ]);
                 }
                 else {
@@ -72,6 +75,7 @@ class StoreUnavailableDatesController extends Controller
                         $storeSchool->user_id = $user_id;
                         $storeSchool->stores_id = $row['stores_id'];
                         $storeSchool->unave_date = $row['unave_date'];
+                        $storeSchool->unave_type = $row['unave_type'];
 
                         $storeSchool->save();
                     }

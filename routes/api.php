@@ -10,6 +10,7 @@ use App\Http\Controllers\API\StoreUsersController;
 use App\Http\Controllers\API\StoreSchoolsController;
 use App\Http\Controllers\API\BookingStatusController;
 use App\Http\Controllers\api\StoreUnavailableDatesController;
+use App\Http\Controllers\api\StoreUnavailableSlotsController;
 
 Route::post('register', [AuthController::class, 'store']);
 Route::post('login', [AuthController::class, 'authenticate']);
@@ -44,11 +45,16 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('store-unavailable-dates/{store}', [StoreUnavailableDatesController::class, 'store']);
     Route::get('edit-unavailable-dates/{id}', [StoreUnavailableDatesController::class, 'edit']);
     Route::delete('remove-unavaidates/{id}', [StoreUnavailableDatesController::class, 'destroy']);
+    Route::get('get-unavailable-slots/{store}/{date}', [StoreUnavailableSlotsController::class, 'index']);
+    Route::get('get-unavailable-date-slots/{store}/{date}', [StoreUnavailableSlotsController::class, 'getUnavailableSlots']);
+    Route::post('store-unavailable-slots/{id}', [StoreUnavailableSlotsController::class, 'store']);  
 
     Route::post('store-register', [AuthController::class, 'storeRegister']);
     Route::get('get-storeid/{id}', [StoreUsersController::class, 'getStoreIdByUser']);
 
     Route::get('bookings-by-store/{slug}', [BookingsController::class, 'appointmentsByStore']);
+    Route::get('bookings-by-date/{id}/{date}', [BookingsController::class, 'getBookingsByDate']);  
+    Route::get('bookings-by-string/{id}/{date}', [BookingsController::class, 'bookingsByString']);
 
     Route::post('update-status', [BookingStatusController::class, 'store']);
     Route::get('get-status-summery/{id}', [BookingStatusController::class, 'show']);

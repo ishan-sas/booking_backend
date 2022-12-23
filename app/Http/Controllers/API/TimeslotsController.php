@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\api;
 
 use App\Models\Stores;
+use App\Models\Bookings;
 use App\Models\TimeSlots;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\StoresUnavailableSlots;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Bookings;
 
 class TimeslotsController extends Controller
 {
@@ -29,33 +30,53 @@ class TimeslotsController extends Controller
         $timeSlotes = TimeSlots::where('stores_id', $stores_id->id)
             ->where('day', $requestDay)
             ->get();
-        
-            foreach($timeSlotes as $key=>$val)
-            {
-               $id =(array)((string)$val->id);
 
+        $timeSlotesIDs = TimeSlots::select('id')
+            ->where('stores_id', $stores_id->id)
+            ->where('day', $requestDay)
+            ->get();    
+        $unavaiSlotes = StoresUnavailableSlots::select('time_slot_id')
+            ->where('stores_id', $stores_id->id)
+            ->where('relate_date', $requestDate)
+            ->first(); 
+        $unavai_slots = json_decode($unavaiSlotes['time_slot_id'], true);  
 
-               $book = Bookings::where('booking_date', $requestDate)->whereJsonContains('time_slots_id',$id)->get();
-               $timeSlotes[$key]['kids'] = $book;
-            }
-
-
-            foreach($timeSlotes as $key=>$val)
-            {   
-                $kids = 0;
-
-                foreach($val->kids as $kid)
-                {
-                    $kids = $kids + $kid->no_of_kids;
+            
+        foreach($timeSlotesIDs as $key=>$val) {
+            foreach ($unavai_slots as $slot) { 
+                if($val->id == $slot) {
+            
+                    unset($timeSlotes[$key]);
                 }
-                $timeSlotes[$key]['kids_count'] = $kids;
             }
+        }
+
+        foreach($timeSlotes as $key=>$val) {
+            $id =(array)((string)$val->id);
+
+            $book = Bookings::where('booking_date', $requestDate)->whereJsonContains('time_slots_id',$id)->get();
+            $timeSlotes[$key]['kids'] = $book;
+        }
+
+        foreach($timeSlotes as $key=>$val) {   
+            $kids = 0;
+
+            foreach($val->kids as $kid) {
+                $kids = $kids + $kid->no_of_kids;
+            }
+            $timeSlotes[$key]['kids_count'] = $kids;
+        }
+        $t = [];
+        foreach($timeSlotes as $tt) {
+            $t[] = $tt;
+        }
         return response()->json([
             'status' => 200,
-            'timeslots' => $timeSlotes,
+            'timeslots' => $t,
         ]);      
     }
 
+    
     public function getTimeLabel() {
         $getData = TimeSlots::all();
         return response()->json([

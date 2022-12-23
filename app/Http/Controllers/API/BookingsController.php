@@ -29,10 +29,37 @@ class BookingsController extends Controller
     }
 
     public function appointmentsByStore($slug) {
-        //$storeId = Stores::select('id')->where('slug', $slug)->first();
         $bookingList = DB::table('bookings')
             ->select('*')
             ->where('stores_id', $slug)
+            ->get();
+
+        return response()->json([
+            'status'=>200,
+            'get_data'=>$bookingList,
+        ]);
+    }
+
+    
+    public function getBookingsByDate($slug, $filterDate) {
+        $bookingList = DB::table('bookings')
+            ->select('*')
+            ->where('stores_id', $slug)
+            ->where('booking_date', $filterDate)
+            ->get();
+
+        return response()->json([
+            'status'=>200,
+            'get_data'=>$bookingList,
+        ]);
+    }
+
+
+    public function bookingsByString($slug, $filterString) {
+        $bookingList = DB::table('bookings')
+            ->select('*')
+            ->where('stores_id', $slug)
+            ->where('id', $filterString)
             ->get();
 
         return response()->json([

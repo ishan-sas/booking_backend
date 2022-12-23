@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('store_unavailable_dates', function (Blueprint $table) {
+        Schema::create('store_unavailable_slotes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('stores_id')->constrained();
-            $table->string('unave_date');
-            $table->integer('unave_type')->default(1);
+            $table->string('relate_date');
+            $table->json('time_slots');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('store_unavailable_dates');
+        Schema::dropIfExists('store_unavailable_slotes');
     }
 };
