@@ -9,8 +9,8 @@ use App\Http\Controllers\API\TimeslotsController;
 use App\Http\Controllers\API\StoreUsersController;
 use App\Http\Controllers\API\StoreSchoolsController;
 use App\Http\Controllers\API\BookingStatusController;
-use App\Http\Controllers\api\StoreUnavailableDatesController;
-use App\Http\Controllers\api\StoreUnavailableSlotsController;
+use App\Http\Controllers\API\StoreUnavailableDatesController;
+use App\Http\Controllers\API\StoreUnavailableSlotsController;
 
 Route::post('register', [AuthController::class, 'store']);
 Route::post('login', [AuthController::class, 'authenticate']);
