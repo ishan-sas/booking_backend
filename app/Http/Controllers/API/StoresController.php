@@ -26,6 +26,15 @@ class StoresController extends Controller
         ]);
     }
 
+    public function getAllStoreForAdmin()
+    {
+        $stores = DB::table('stores')->get();
+        return response()->json([
+            'status'=>200,
+            'get_data'=>$stores
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -134,6 +143,26 @@ class StoresController extends Controller
                 ]);
             } 
         }
+    }
+
+    public function updateStoreStatus(Request $request, $id)
+    {
+        $stores = Stores::find($id);
+        if($stores) {
+            $stores->status = $request->input('status');
+
+            $stores->save();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Successfully updated.',
+            ]);
+        }
+        else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No ID found.',
+            ]);
+        } 
     }
 
     /**

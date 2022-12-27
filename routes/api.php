@@ -52,6 +52,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('store-unavailable-slots/{id}', [StoreUnavailableSlotsController::class, 'store']);  
 
     Route::post('store-register', [AuthController::class, 'storeRegister']);
+    Route::get('get-all-stores', [StoresController::class, 'getAllStoreForAdmin']);
+    Route::put('update-store-status/{id}', [StoresController::class, 'updateStoreStatus']);
     Route::get('get-storeid/{id}', [StoreUsersController::class, 'getStoreIdByUser']);
 
     Route::get('bookings-by-store/{slug}', [BookingsController::class, 'appointmentsByStore']);
@@ -61,6 +63,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('update-status', [BookingStatusController::class, 'store']);
     Route::get('get-status-summery/{id}', [BookingStatusController::class, 'show']);
     Route::get('get-booking-info/{id}', [BookingsController::class, 'show']);
+    //edit-store-account
 
 });
 
