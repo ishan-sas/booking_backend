@@ -39,17 +39,17 @@ class TimeslotsController extends Controller
             ->where('stores_id', $stores_id->id)
             ->where('relate_date', $requestDate)
             ->first(); 
-        $unavai_slots = json_decode($unavaiSlotes['time_slot_id'], true);  
-
             
-        foreach($timeSlotesIDs as $key=>$val) {
-            foreach ($unavai_slots as $slot) { 
-                if($val->id == $slot) {
-            
-                    unset($timeSlotes[$key]);
+        if(isset($unavaiSlotes)){
+            $unavai_slots = json_decode($unavaiSlotes['time_slot_id'], true);  
+            foreach($timeSlotesIDs as $key=>$val) {
+                foreach ($unavai_slots as $slot) { 
+                    if($val->id == $slot) {
+                        unset($timeSlotes[$key]);
+                    }
                 }
             }
-        }
+        }    
 
         foreach($timeSlotes as $key=>$val) {
             $id =(array)((string)$val->id);
