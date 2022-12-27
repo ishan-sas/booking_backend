@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\BookingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,15 +22,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-// Route::get('send-mail', function () {
-   
-//     $details = [
-//         'title' => 'Mail from ItSolutionStuff.com',
-//         'body' => 'This is for testing email using smtp'
-//     ];
-   
-//     \Mail::to('ishan@sascreative.co.nz')->send(new \App\Mail\BookingSubmittedMail($details));
-   
-//     dd("Email is Sent.");
-// });
+// Route::get('downloadPDF', [BookingsController::class, 'downloadPDF'])->name('downloadPDF');

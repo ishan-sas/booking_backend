@@ -24,6 +24,8 @@ Route::get('get-schools/{slug}', [StoreSchoolsController::class, 'index']);
 Route::post('register-with-booking', [BookingsController::class, 'regWithBooking']);
 Route::post('login-with-booking', [BookingsController::class, 'loginWithBooking']);
 
+Route::get('download-pdf/{store_id}/{date}', [BookingsController::class, 'downloadPDF']);
+
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/user', function () {
         return response()->json([
@@ -58,6 +60,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
 
     Route::post('update-status', [BookingStatusController::class, 'store']);
     Route::get('get-status-summery/{id}', [BookingStatusController::class, 'show']);
+    Route::get('get-booking-info/{id}', [BookingsController::class, 'show']);
 
 });
 

@@ -1,20 +1,22 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
 use App\Models\Users;
 use App\Models\Stores;
 use App\Mail\NewBooking;
-use App\Mail\ClientConfirmation;
 use App\Models\Bookings;
 use App\Models\TimeSlots;
 use App\Models\StoreUsers;
 use Illuminate\Http\Request;
+use App\Mail\ClientConfirmation;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class BookingsController extends Controller
 {
@@ -30,9 +32,16 @@ class BookingsController extends Controller
 
     public function appointmentsByStore($slug) {
         $bookingList = DB::table('bookings')
-            ->select('*')
-            ->where('stores_id', $slug)
-            ->get();
+            ->select('bookings.id', 'bookings.status', 'bookings.time_slots_id', 'bookings.no_of_kids', 'bookings.booking_date', 'users.name', 'users.email', 'users.contact_no')
+            ->join('users', 'bookings.user_id', '=', 'users.id')
+            ->where('bookings.stores_id', $slug)
+            ->get()->toArray();  
+            foreach($bookingList as $key=>$booking) {
+                $booking = (array)$booking;
+                $timeSlots = json_decode($booking['time_slots_id']);
+                $booking['slots'] = $this->getTimeSlots($timeSlots);  
+                $bookingList[$key] = $booking;    
+            }  
 
         return response()->json([
             'status'=>200,
@@ -123,8 +132,8 @@ class BookingsController extends Controller
         $bookingData['time_slots'] = json_encode($timeSlotData);
         $bookingData['store_name'] = $storeData->store_name; 
 
-        // Mail::to($storeData->email)->send(new NewBooking($bookingData));
-        // Mail::to($request->email)->send(new ClientConfirmation($bookingData));
+        Mail::to($storeData->email)->send(new NewBooking($bookingData));
+        Mail::to($request->email)->send(new ClientConfirmation($bookingData));
 
         return response()->json([
             'status' => 200,
@@ -194,8 +203,8 @@ class BookingsController extends Controller
         $bookingData['time_slots'] = json_encode($timeSlotData);
         $bookingData['store_name'] = $storeData->store_name; 
 
-        // Mail::to($storeData->email)->send(new NewBooking($bookingData));
-        // Mail::to($request->email)->send(new ClientConfirmation($bookingData));
+        Mail::to($storeData->email)->send(new NewBooking($bookingData));
+        Mail::to($request->email)->send(new ClientConfirmation($bookingData));
 
         return response()->json([
             'status' => 200,
@@ -217,7 +226,26 @@ class BookingsController extends Controller
      */
     public function show($id)
     {
-        //
+        $bookingData = Bookings::where('id', $id)->first(); 
+        $timeSlotData = [];
+        foreach (json_decode($bookingData->time_slots_id) as $timeSlot) {
+            $timeLabel = TimeSlots::select('time_slot')->where('id', $timeSlot)->first();
+            array_push($timeSlotData, $timeLabel);
+        }
+        $bookingData['customer_data'] = Users::select('name', 'email', 'contact_no')->where('id', $bookingData->user_id)->first();
+        if($bookingData) {
+            return response()->json([
+                'status' => 200,
+                'get_data' => $bookingData,
+                'timeSlot_data' => $timeSlotData
+            ]);
+        }
+        else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No ID found.!',
+            ]);
+        }
     }
 
     /**
@@ -252,6 +280,51 @@ class BookingsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function downloadPDF($storeId, $date){
+        if($date != 'null'){
+            $bookings = DB::table('bookings')
+            ->select('bookings.id', 'bookings.time_slots_id', 'bookings.no_of_kids', 'bookings.booking_date', 'users.name', 'users.email', 'users.contact_no')
+            ->join('users', 'bookings.user_id', '=', 'users.id')
+            ->where('bookings.stores_id', $storeId)
+            ->where('bookings.booking_date', $date)
+            ->get()->toArray();  
+            foreach($bookings as $key=>$booking) {
+                $booking = (array)$booking;
+                $timeSlots = json_decode($booking['time_slots_id']);
+                $booking['slots'] = $this->getTimeSlots($timeSlots);  
+                $bookings[$key] = $booking;    
+            }
+        }
+        else {
+            $bookings = DB::table('bookings')
+            ->select('bookings.id', 'bookings.time_slots_id', 'bookings.no_of_kids', 'bookings.booking_date', 'users.name', 'users.email', 'users.contact_no')
+            ->join('users', 'bookings.user_id', '=', 'users.id')
+            ->where('bookings.stores_id', $storeId)
+            ->get()->toArray();  
+            foreach($bookings as $key=>$booking) {
+                $booking = (array)$booking;
+                $timeSlots = json_decode($booking['time_slots_id']);
+                $booking['slots'] = $this->getTimeSlots($timeSlots);  
+                $bookings[$key] = $booking;    
+            }
+        }
+        $pdf = PDF::loadView('bookingList', ['bookings' => $bookings]);
+        return $pdf->stream('invoice.pdf');
+    }
+
+
+    private function getTimeSlots(array $slotIds):array {
+        $slots = DB::table('time_slots')
+            ->select('time_slot')
+            ->whereIn('id', $slotIds)
+            ->get(); 
+        $output = [];
+        foreach ($slots as $slot) {
+            $output[] = $slot->time_slot;
+        }  
+        return $output; 
     }
 
 }

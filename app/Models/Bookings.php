@@ -18,4 +18,8 @@ class Bookings extends Model
         'extra_note',
         'status'
     ];
+
+    // public function timeSlots(){
+    //     return $this->hasMany('App\Models\Bookings','time_slots_id','id');
+    // }
 }
