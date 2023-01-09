@@ -19,6 +19,10 @@
 					<p>You’ve received the new booking.</p>
 				</div>
 				<div style="width: 100%; display: block; margin-bottom: 10px;">
+					<div style="width: 30%; display: inline-block;"><label style="font-weight:500;display: block;">Booking ID:</label></div>
+          <div style="width: 65%; display: inline-block;">{{ $booking['booking_id'] }}</div>
+				</div>
+				<div style="width: 100%; display: block; margin-bottom: 10px;">
 					<div style="width: 30%; display: inline-block;"><label style="font-weight:500;display: block;">Booking Date:</label></div>
           <div style="width: 65%; display: inline-block;">{{ $booking['booking_date'] }}</div>
 				</div>

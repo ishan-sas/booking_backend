@@ -127,9 +127,10 @@ class BookingsController extends Controller
 
         $booking = Bookings::create($bookingData);
 
+        $bookingData['booking_id'] = $booking->id;
         $bookingData['customer_email'] = $request->email;
         $bookingData['store_email'] = $storeData->email;
-        $bookingData['time_slots'] = json_encode($timeSlotData);
+        $bookingData['time_slots'] = $timeSlotData[0]['time_slot'];
         $bookingData['store_name'] = $storeData->store_name; 
 
         Mail::to($storeData->email)->send(new NewBooking($bookingData));
@@ -198,10 +199,13 @@ class BookingsController extends Controller
 
         $booking = Bookings::create($bookingData);
 
+        $bookingData['booking_id'] = $booking->id;
         $bookingData['customer_email'] = $request->email;
         $bookingData['store_email'] = $storeData->email;
-        $bookingData['time_slots'] = json_encode($timeSlotData);
+        $bookingData['time_slots'] = $timeSlotData[0]['time_slot'];
         $bookingData['store_name'] = $storeData->store_name; 
+
+        print_r($bookingData);
 
         Mail::to($storeData->email)->send(new NewBooking($bookingData));
         Mail::to($request->email)->send(new ClientConfirmation($bookingData));
