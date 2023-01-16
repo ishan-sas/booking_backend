@@ -99,48 +99,59 @@ class BookingsController extends Controller
         if(json_encode($request->is_subscribe) == true) {
             $isSubscribe = 1; 
         }
-        $user = Users::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'contact_no' => $request->contact_no,
-            'user_role' => $request->user_role,
-            'is_subscribe' => $isSubscribe,
-        ]);
 
-        $storeData = Stores::select('id', 'store_name', 'email')->where('slug', $request->stores_id)->first();
-        $timeSlotData = [];
-        foreach ($request->time_slots_id as $timeSlot) {
-            $timeLabel = TimeSlots::select('time_slot')->where('id', $timeSlot)->first();
-            array_push($timeSlotData, $timeLabel);
+        $CheckEmail = Users::where('email', '=', $request->email)->first();
+
+        if($CheckEmail) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'Email address already used.'
+            ]);
         }
-
-        $bookingData = [
-            'user_id' => $user->id,
-            'stores_id' =>  $storeData->id,
-            'time_slots_id' => json_encode($request->time_slots_id),
-            'no_of_kids' => $request->no_of_kids,
-            'booking_date' => $request->booking_date,
-            'ftroom' => $request->ftroom,
-            'extra_note' => $request->extra_note,
-        ];
-
-        $booking = Bookings::create($bookingData);
-
-        $bookingData['booking_id'] = $booking->id;
-        $bookingData['customer_email'] = $request->email;
-        $bookingData['store_email'] = $storeData->email;
-        $bookingData['time_slots'] = $timeSlotData[0]['time_slot'];
-        $bookingData['store_name'] = $storeData->store_name; 
-
-        Mail::to($storeData->email)->send(new NewBooking($bookingData));
-        Mail::to($request->email)->send(new ClientConfirmation($bookingData));
-
-        return response()->json([
-            'status' => 200,
-            'get_data' => $booking['id'],
-            'message' => 'Registered successfully.',
-        ]);
+        else {
+            $user = Users::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'contact_no' => $request->contact_no,
+                'user_role' => $request->user_role,
+                'is_subscribe' => $isSubscribe,
+            ]);
+    
+            $storeData = Stores::select('id', 'store_name', 'email')->where('slug', $request->stores_id)->first();
+            $timeSlotData = [];
+            foreach ($request->time_slots_id as $timeSlot) {
+                $timeLabel = TimeSlots::select('time_slot')->where('id', $timeSlot)->first();
+                array_push($timeSlotData, $timeLabel);
+            }
+    
+            $bookingData = [
+                'user_id' => $user->id,
+                'stores_id' =>  $storeData->id,
+                'time_slots_id' => json_encode($request->time_slots_id),
+                'no_of_kids' => $request->no_of_kids,
+                'booking_date' => $request->booking_date,
+                'ftroom' => $request->ftroom,
+                'extra_note' => $request->extra_note,
+            ];
+    
+            $booking = Bookings::create($bookingData);
+    
+            $bookingData['booking_id'] = $booking->id;
+            $bookingData['customer_email'] = $request->email;
+            $bookingData['store_email'] = $storeData->email;
+            $bookingData['time_slots'] = $timeSlotData[0]['time_slot'];
+            $bookingData['store_name'] = $storeData->store_name; 
+    
+            Mail::to($storeData->email)->send(new NewBooking($bookingData));
+            Mail::to($request->email)->send(new ClientConfirmation($bookingData));
+    
+            return response()->json([
+                'status' => 200,
+                'get_data' => $booking['id'],
+                'message' => 'Registered successfully.',
+            ]);
+        }
     }
 
 
@@ -164,7 +175,7 @@ class BookingsController extends Controller
             if(! $user || ! Hash::check($request->password, $user->password)) {
                 return response()->json([
                     'status' => 401,
-                    'message' => 'No. Invalid credentials'
+                    'message' => 'Invalid credentials'
                 ]);
             }
             else {
@@ -204,8 +215,6 @@ class BookingsController extends Controller
         $bookingData['store_email'] = $storeData->email;
         $bookingData['time_slots'] = $timeSlotData[0]['time_slot'];
         $bookingData['store_name'] = $storeData->store_name; 
-
-        print_r($bookingData);
 
         Mail::to($storeData->email)->send(new NewBooking($bookingData));
         Mail::to($request->email)->send(new ClientConfirmation($bookingData));
