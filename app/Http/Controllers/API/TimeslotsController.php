@@ -54,7 +54,10 @@ class TimeslotsController extends Controller
         foreach($timeSlotes as $key=>$val) {
             $id =(array)((string)$val->id);
 
-            $book = Bookings::where('booking_date', $requestDate)->whereJsonContains('time_slots_id', $id)->get();
+            $book = Bookings::where('booking_date', $requestDate)
+                ->where('status','!=', 0)
+                ->whereJsonContains('time_slots_id', $id)
+                ->get();
             $timeSlotes[$key]['kids'] = $book;
         }
 
