@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Carbon;
 use App\Models\Users;
 use App\Models\Stores;
 use App\Mail\NewBooking;
@@ -8,6 +9,7 @@ use App\Models\Bookings;
 use App\Models\TimeSlots;
 use App\Models\StoreUsers;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\ClientConfirmation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
@@ -15,7 +17,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class BookingsController extends Controller
@@ -31,11 +32,17 @@ class BookingsController extends Controller
     }
 
     public function appointmentsByStore($slug) {
+        $getCurrentDate = Carbon::now();
+        $currentDate = $getCurrentDate->format('d.m.Y'); 
+
         $bookingList = DB::table('bookings')
             ->select('bookings.id', 'bookings.status', 'bookings.time_slots_id', 'bookings.no_of_kids', 'bookings.booking_date', 'users.name', 'users.email', 'users.contact_no')
             ->join('users', 'bookings.user_id', '=', 'users.id')
             ->where('bookings.stores_id', $slug)
+            //->where('booking_date', '<', $currentDate)
+            ->orderBy('bookings.booking_date', 'desc')
             ->get()->toArray();  
+
             foreach($bookingList as $key=>$booking) {
                 $booking = (array)$booking;
                 $timeSlots = json_decode($booking['time_slots_id']);
@@ -52,10 +59,18 @@ class BookingsController extends Controller
     
     public function getBookingsByDate($slug, $filterDate) {
         $bookingList = DB::table('bookings')
-            ->select('*')
-            ->where('stores_id', $slug)
-            ->where('booking_date', $filterDate)
+            ->select('bookings.id', 'bookings.status', 'bookings.time_slots_id', 'bookings.no_of_kids', 'bookings.booking_date', 'users.name', 'users.email', 'users.contact_no')
+            ->join('users', 'bookings.user_id', '=', 'users.id')
+            ->where('bookings.stores_id', $slug)
+            ->where('bookings.booking_date', $filterDate)
             ->get();
+
+        foreach($bookingList as $key=>$booking) {
+            $booking = (array)$booking;
+            $timeSlots = json_decode($booking['time_slots_id']);
+            $booking['slots'] = $this->getTimeSlots($timeSlots);  
+            $bookingList[$key] = $booking;    
+        }     
 
         return response()->json([
             'status'=>200,
@@ -66,10 +81,18 @@ class BookingsController extends Controller
 
     public function bookingsByString($slug, $filterString) {
         $bookingList = DB::table('bookings')
-            ->select('*')
-            ->where('stores_id', $slug)
-            ->where('id', $filterString)
+            ->select('bookings.id', 'bookings.status', 'bookings.time_slots_id', 'bookings.no_of_kids', 'bookings.booking_date', 'users.name', 'users.email', 'users.contact_no')
+            ->join('users', 'bookings.user_id', '=', 'users.id')
+            ->where('bookings.stores_id', $slug)
+            ->where('bookings.id', $filterString)
             ->get();
+        
+        foreach($bookingList as $key=>$booking) {
+            $booking = (array)$booking;
+            $timeSlots = json_decode($booking['time_slots_id']);
+            $booking['slots'] = $this->getTimeSlots($timeSlots);  
+            $bookingList[$key] = $booking;    
+        }     
 
         return response()->json([
             'status'=>200,
