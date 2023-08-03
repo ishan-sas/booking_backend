@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('stores_id')->constrained();
             $table->string('day');
             $table->string('time_slot');
-            $table->string('session');
+            $table->string('session')->nullable();
             $table->timestamps();
         });
     }

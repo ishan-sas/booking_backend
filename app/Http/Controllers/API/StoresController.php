@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\Users;
 use App\Models\Stores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class StoresController extends Controller
@@ -122,6 +124,7 @@ class StoresController extends Controller
             ]);
         }
         else {
+            $userId = Auth::id();
             $stores = Stores::find($id);
             if($stores) {
                 $stores->store_name = $request->input('store_name');
@@ -129,8 +132,12 @@ class StoresController extends Controller
                 $stores->address = $request->input('address');
                 $stores->contact_no = $request->input('contact_no');
                 $stores->email = $request->input('email');
-
                 $stores->save();
+
+                $users = Users::find($userId);
+                $users->email = $request->input('email');
+                $users->save();
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Successfully updated.',

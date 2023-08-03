@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('store_name', 128);
             $table->string('slug', 128);
             $table->integer('no_of_ftrooms')->nullable();
-            $table->string('contact_no', 128);
-            $table->text('address');
+            $table->string('contact_no', 128)->nullable();
+            $table->text('address')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
         });

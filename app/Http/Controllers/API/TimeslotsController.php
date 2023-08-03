@@ -29,7 +29,7 @@ class TimeslotsController extends Controller
 
         $timeSlotes = TimeSlots::where('stores_id', $stores_id->id)
             ->where('day', $requestDay)
-            ->get();
+            ->get(); 
 
         $timeSlotesIDs = TimeSlots::select('id')
             ->where('stores_id', $stores_id->id)

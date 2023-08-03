@@ -166,8 +166,8 @@ class BookingsController extends Controller
             $bookingData['time_slots'] = $timeSlotData[0]['time_slot'];
             $bookingData['store_name'] = $storeData->store_name; 
     
-            Mail::to($storeData->email)->send(new NewBooking($bookingData));
-            Mail::to($request->email)->send(new ClientConfirmation($bookingData));
+            // Mail::to($storeData->email)->send(new NewBooking($bookingData));
+            // Mail::to($request->email)->send(new ClientConfirmation($bookingData));
     
             return response()->json([
                 'status' => 200,

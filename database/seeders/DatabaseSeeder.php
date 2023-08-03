@@ -28,9 +28,9 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert($userList);
 
         $this->call([
-            //StoresSeeder::class,
-            // TimeSlotsSeeder::class,
-            // BookingsSeeder::class,
+            StoresSeeder::class,
+            TimeSlotsSeeder::class,
+            BookingsSeeder::class,
         ]);
     }
 }

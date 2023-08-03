@@ -160,7 +160,7 @@ class AuthController extends Controller
 
                 $storeProfile = StoreUsers::where('user_id', $user->id)->first();
                 if(isset($storeProfile)) {
-                    $storeId = $storeProfile->id;
+                    $storeId = $storeProfile->stores_id;
                 } 
                 else {
                     $storeId = 0;
