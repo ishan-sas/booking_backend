@@ -22,15 +22,15 @@ class DatabaseSeeder extends Seeder
                 'email' => 'test@test.com',
                 'password' => Hash::make('123'),
                 'contact_no' => '0778094417',
-                'user_role' => 1,
+                'user_role' => 3,
             ]
         ];
         DB::table('users')->insert($userList);
 
-        $this->call([
-            StoresSeeder::class,
-            TimeSlotsSeeder::class,
-            BookingsSeeder::class,
-        ]);
+        // $this->call([
+        //     StoresSeeder::class,
+        //     TimeSlotsSeeder::class,
+        //     BookingsSeeder::class,
+        // ]);
     }
 }
