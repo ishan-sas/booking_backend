@@ -5,8 +5,10 @@ namespace App\Http\Controllers\api;
 use App\Models\Bookings;
 use Illuminate\Http\Request;
 use App\Models\BookingStatus;
+use App\Mail\BookingCancellation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class BookingStatusController extends Controller
@@ -60,8 +62,16 @@ class BookingStatusController extends Controller
             $bookings = Bookings::find($request->booking_id);
             if($bookings) {
                 $bookings->status = $request->status;
-
                 $bookings->save();
+
+                $bookingData = [
+                    'booking_id' => $request->booking_id,
+                    'booking_date' => $request->booking_date,
+                    'customer_email' => $request->customer_email,
+                ];
+                if($request->status == 0) {
+                    Mail::to($request->customer_email)->send(new BookingCancellation($bookingData));
+                }
             }
         }
         return response()->json([

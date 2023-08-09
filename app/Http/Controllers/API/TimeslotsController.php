@@ -123,7 +123,7 @@ class TimeslotsController extends Controller
             foreach($request->mondayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
                 $startTime = (float)$slot[0];
-                if($startTime < 8 ) { 
+                if($startTime > 12 ) { 
                     $session = 'PM'; 
                 }
                 else { 
