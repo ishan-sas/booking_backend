@@ -19,12 +19,22 @@ class StoreUnavailableDatesController extends Controller
      */
     public function getUnavailableDates($slug, $requestDate) {
         $storeData = Stores::select('id')->where('slug', $slug)->first();
-        $unaveDate = DB::table('store_unavailable_dates')
-            ->select('unave_date')
-            ->where('unave_date', $requestDate)
-            ->where('unave_type', 1)
-            ->where('stores_id', $storeData->id)
-            ->get();
+        if($requestDate == 'all') {
+            $unaveDate = DB::table('store_unavailable_dates')
+                ->select('unave_date')
+                ->where('unave_type', 1)
+                ->where('stores_id', $storeData->id)
+                ->get();
+        }
+        else {
+            $unaveDate = DB::table('store_unavailable_dates')
+                ->select('unave_date')
+                ->where('unave_date', $requestDate)
+                ->where('unave_type', 1)
+                ->where('stores_id', $storeData->id)
+                ->get();
+        }
+
         return response()->json([
             'status'=>200,
             'get_data'=>$unaveDate
