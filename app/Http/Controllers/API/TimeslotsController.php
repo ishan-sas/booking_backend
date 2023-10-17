@@ -155,7 +155,7 @@ class TimeslotsController extends Controller
             foreach($request->tuesdayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
                 $startTime = (float)$slot[0];
-                if($startTime < 8 ) { 
+                if($startTime < 12 ) { 
                     $session = 'PM'; 
                 }
                 else { 
@@ -187,7 +187,7 @@ class TimeslotsController extends Controller
             foreach($request->wednesdayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
                 $startTime = (float)$slot[0];
-                if($startTime < 8 ) { 
+                if($startTime < 12 ) { 
                     $session = 'PM'; 
                 }
                 else { 
@@ -219,7 +219,7 @@ class TimeslotsController extends Controller
             foreach($request->thursdayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
                 $startTime = (float)$slot[0];
-                if($startTime < 8 ) { 
+                if($startTime < 12 ) { 
                     $session = 'PM'; 
                 }
                 else { 
@@ -251,7 +251,7 @@ class TimeslotsController extends Controller
             foreach($request->fridayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
                 $startTime = (float)$slot[0];
-                if($startTime < 8 ) { 
+                if($startTime < 12 ) { 
                     $session = 'PM'; 
                 }
                 else { 
@@ -283,7 +283,7 @@ class TimeslotsController extends Controller
             foreach($request->saturdayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
                 $startTime = (float)$slot[0];
-                if($startTime < 8 ) { 
+                if($startTime < 12 ) { 
                     $session = 'PM'; 
                 }
                 else { 
