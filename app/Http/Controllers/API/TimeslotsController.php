@@ -121,6 +121,7 @@ class TimeslotsController extends Controller
             $user_id = Auth::user()->id;
 
             foreach($request->mondayTimeSlots as $row) {
+                $session = NULL;
                 $slot = explode("-", $row['time_slot']);
                 $startTime = (float)$slot[0];
                 if($startTime > 12 ) { 
@@ -153,45 +154,46 @@ class TimeslotsController extends Controller
             }
 
             foreach($request->tuesdayTimeSlots as $row) {
-                $slot = explode("-", $row['time_slot']);
-                $startTime = (float)$slot[0];
-                if($startTime < 12 ) { 
-                    $session = 'PM'; 
+                $tusession = NULL;
+                $tuslot = explode("-", $row['time_slot']);
+                $tustartTime = (float)$tuslot[0];
+                if($tustartTime > 12 ) { 
+                    $tusession = 'PM'; 
                 }
                 else { 
-                    $session = 'AM'; 
+                    $tusession = 'AM'; 
                 }
                 if($row['id'] == NULL) {
-                    $timeSlots = TimeSlots::create([
+                    $tutimeSlots = TimeSlots::create([
                         'user_id' => $user_id,
                         'stores_id' => $row['stores_id'],
                         'day' => $row['day'],
                         'time_slot' => $row['time_slot'],
-                        'session' => $session
+                        'session' => $tusession
                     ]);
                 }
                 else {
-                    $timeSlotData = TimeSlots::find($row['id']);
-                    if($timeSlotData) {
-                        $timeSlotData->user_id = $user_id;
-                        $timeSlotData->stores_id = $row['stores_id'];
-                        $timeSlotData->day = $row['day'];
-                        $timeSlotData->time_slot = $row['time_slot'];
-                        $timeSlotData->session = $session;
+                    $tutimeSlotData = TimeSlots::find($row['id']);
+                    if($tutimeSlotData) {
+                        $tutimeSlotData->user_id = $user_id;
+                        $tutimeSlotData->stores_id = $row['stores_id'];
+                        $tutimeSlotData->day = $row['day'];
+                        $tutimeSlotData->time_slot = $row['time_slot'];
+                        $tutimeSlotData->session = $tusession;
 
-                        $timeSlotData->save();
+                        $tutimeSlotData->save();
                     }
                 }
             }
 
             foreach($request->wednesdayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
-                $startTime = (float)$slot[0];
-                if($startTime < 12 ) { 
-                    $session = 'PM'; 
+                $wdstartTime = (float)$slot[0];
+                if($wdstartTime > 12 ) { 
+                    $wdsession = 'PM'; 
                 }
                 else { 
-                    $session = 'AM'; 
+                    $wdsession = 'AM'; 
                 }
                 if($row['id'] == NULL) {
                     $timeSlots = TimeSlots::create([
@@ -199,7 +201,7 @@ class TimeslotsController extends Controller
                         'stores_id' => $row['stores_id'],
                         'day' => $row['day'],
                         'time_slot' => $row['time_slot'],
-                        'session' => $session
+                        'session' => $wdsession
                     ]);
                 }
                 else {
@@ -209,7 +211,7 @@ class TimeslotsController extends Controller
                         $timeSlotData->stores_id = $row['stores_id'];
                         $timeSlotData->day = $row['day'];
                         $timeSlotData->time_slot = $row['time_slot'];
-                        $timeSlotData->session = $session;
+                        $timeSlotData->session = $wdsession;
 
                         $timeSlotData->save();
                     }
@@ -218,12 +220,12 @@ class TimeslotsController extends Controller
 
             foreach($request->thursdayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
-                $startTime = (float)$slot[0];
-                if($startTime < 12 ) { 
-                    $session = 'PM'; 
+                $thstartTime = (float)$slot[0];
+                if($thstartTime > 12 ) { 
+                    $thsession = 'PM'; 
                 }
                 else { 
-                    $session = 'AM'; 
+                    $thsession = 'AM'; 
                 }
                 if($row['id'] == NULL) {
                     $timeSlots = TimeSlots::create([
@@ -231,7 +233,7 @@ class TimeslotsController extends Controller
                         'stores_id' => $row['stores_id'],
                         'day' => $row['day'],
                         'time_slot' => $row['time_slot'],
-                        'session' => $session,
+                        'session' => $thsession,
                     ]);
                 }
                 else {
@@ -241,7 +243,7 @@ class TimeslotsController extends Controller
                         $timeSlotData->stores_id = $row['stores_id'];
                         $timeSlotData->day = $row['day'];
                         $timeSlotData->time_slot = $row['time_slot'];
-                        $timeSlotData->session = $session;
+                        $timeSlotData->session = $thsession;
 
                         $timeSlotData->save();
                     }
@@ -250,12 +252,12 @@ class TimeslotsController extends Controller
 
             foreach($request->fridayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
-                $startTime = (float)$slot[0];
-                if($startTime < 12 ) { 
-                    $session = 'PM'; 
+                $frstartTime = (float)$slot[0];
+                if($frstartTime > 12 ) { 
+                    $frsession = 'PM'; 
                 }
                 else { 
-                    $session = 'AM'; 
+                    $frsession = 'AM'; 
                 }
                 if($row['id'] == NULL) {
                     $timeSlots = TimeSlots::create([
@@ -263,7 +265,7 @@ class TimeslotsController extends Controller
                         'stores_id' => $row['stores_id'],
                         'day' => $row['day'],
                         'time_slot' => $row['time_slot'],
-                        'session' => $session
+                        'session' => $frsession
                     ]);
                 }
                 else {
@@ -273,7 +275,7 @@ class TimeslotsController extends Controller
                         $timeSlotData->stores_id = $row['stores_id'];
                         $timeSlotData->day = $row['day'];
                         $timeSlotData->time_slot = $row['time_slot'];
-                        $timeSlotData->session = $session;
+                        $timeSlotData->session = $frsession;
 
                         $timeSlotData->save();
                     }
@@ -282,12 +284,12 @@ class TimeslotsController extends Controller
 
             foreach($request->saturdayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
-                $startTime = (float)$slot[0];
-                if($startTime < 12 ) { 
-                    $session = 'PM'; 
+                $ststartTime = (float)$slot[0];
+                if($ststartTime > 12 ) { 
+                    $stsession = 'PM'; 
                 }
                 else { 
-                    $session = 'AM'; 
+                    $stsession = 'AM'; 
                 }
                 if($row['id'] == NULL) {
                     $timeSlots = TimeSlots::create([
@@ -295,7 +297,7 @@ class TimeslotsController extends Controller
                         'stores_id' => $row['stores_id'],
                         'day' => $row['day'],
                         'time_slot' => $row['time_slot'],
-                        'session' => $session
+                        'session' => $stsession
                     ]);
                 }
                 else {
@@ -305,7 +307,7 @@ class TimeslotsController extends Controller
                         $timeSlotData->stores_id = $row['stores_id'];
                         $timeSlotData->day = $row['day'];
                         $timeSlotData->time_slot = $row['time_slot'];
-                        $timeSlotData->session = $session;
+                        $timeSlotData->session = $stsession;
 
                         $timeSlotData->save();
                     }
