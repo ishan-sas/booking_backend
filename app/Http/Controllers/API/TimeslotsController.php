@@ -282,6 +282,7 @@ class TimeslotsController extends Controller
                 }
             }
 
+            
             foreach($request->saturdayTimeSlots as $row) {
                 $slot = explode("-", $row['time_slot']);
                 $ststartTime = (float)$slot[0];
