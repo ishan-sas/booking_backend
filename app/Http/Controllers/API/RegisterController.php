@@ -56,4 +56,5 @@ class RegisterController extends Controller
             'message' => 'Registered successfully.',
         ]);
     }
+
 }
